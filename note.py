@@ -1,10 +1,13 @@
 import uuid
+import datetime
 class SimpleNote():
     def __init__(self, uuid: str, timestamp: int, note: str):
         self.uuid = uuid
         self.timestamp = timestamp
         self.note = note
 
+    def format_date(self):
+        return datetime.datetime.fromtimestamp(self.timestamp)
 
 class SimpleNoteManager():
     filepath = ""
@@ -26,5 +29,5 @@ class SimpleNoteManager():
                 self.notes.append(SimpleNote(*row))
         return self.notes
 
-    def add_note(self, note:SimpleNote):
-        self.note.append(note)
+    def add_note(self, text:str):
+        self.note.append(SimpleNote(uuid.uuid4, datetime.datetime.now*().timestamp(), text))
