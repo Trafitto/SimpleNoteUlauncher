@@ -1,16 +1,21 @@
 import uuid
 import datetime
+import logging
+
+
 class SimpleNote(object):
-    def __init__(self, uuid: str, timestamp: int, note: str):
+    def __init__(self, uuid: str, timestamp: float, note: str):
         self.uuid = uuid
-        self.timestamp = timestamp
+        self.timestamp = float(timestamp)
         self.note = note.replace('\n', '')
 
     def __str__(self):
         return f'{self.uuid}|{self.timestamp}|{self.note}'
 
     def format_date(self):
-        return datetime.datetime.fromtimestamp(self.timestamp)
+        date = datetime.datetime.fromtimestamp(self.timestamp)
+        return date.strftime('%d/%m/%Y')
+
 
 class SimpleNoteManager():
     filepath = ""
@@ -45,9 +50,9 @@ class SimpleNoteManager():
                     if note:
                         file_.write(str(note)+'\n')
 
-    def add_note(self, text:str):
-        self.notes.append(SimpleNote(uuid.uuid4(), datetime.datetime.now().timestamp(), text))
-    
+    def add_note(self, text: str):
+        self.notes.append(SimpleNote(
+            uuid.uuid4(), datetime.datetime.now().timestamp(), text))
 
 
 ''' SimpleNoteManager().add_note('test')
