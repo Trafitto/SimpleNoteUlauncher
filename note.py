@@ -1,6 +1,8 @@
+from asyncore import file_dispatcher
 import uuid
 import datetime
 import logging
+import os
 
 
 class SimpleNote(object):
@@ -18,16 +20,18 @@ class SimpleNote(object):
 
 
 class SimpleNoteManager():
-    filepath = ""
     notes: list[SimpleNote] = []
-
-    def __new__(cls):
+    filepath = './simple-note.txt'
+    def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
-                SimpleNoteManager, cls).__new__(cls)
+                SimpleNoteManager, cls).__new__(cls, *args, **kwargs)
         return cls.instance
 
     def __init__(self):
+        if not os.path.exists(self.filepath):
+            file_ = open(self.filepath, 'x') 
+            file_.close()
         self.notes = self.read_notes()
 
     def _format_notes(self):
@@ -35,7 +39,7 @@ class SimpleNoteManager():
 
     def read_notes(self):
         if not self.notes or len(self.notes) == 0:
-            with open('./simple-note.txt', 'r') as file_:
+            with open(self.filepath, 'r') as file_:
                 for row in file_.readlines():
                     line = row.split('|', 3)
                     if line and len(line) == 3:
@@ -44,7 +48,7 @@ class SimpleNoteManager():
 
     def save_notes(self):
         if self.notes and len(self.notes) > 0:
-            with open('./simple-note.txt', 'w') as file_:
+            with open(self.filepath, 'w') as file_:
                 for note in self.notes:
                     print(str(note))
                     if note:

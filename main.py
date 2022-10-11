@@ -22,6 +22,8 @@ class SimpleNoteExtension(Extension):
 class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
+        # File path preference currently not supported
+        # extension.preferences['filepath']
         note_manager = SimpleNoteManager()
         query = event.get_argument()
         items = []
@@ -46,6 +48,8 @@ class KeywordQueryEventListener(EventListener):
 class ItemEnterEventListener(EventListener):
     def on_event(self, event, extension):
         items = []
+        # File path preference currently not supported
+        # extension.preferences['filepath']
         note_manager = SimpleNoteManager()
         data = event.get_data()
         if data and data['note']:
