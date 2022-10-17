@@ -35,7 +35,7 @@ class KeywordQueryEventListener(EventListener):
                 items.append(ExtensionResultItem(icon=DEFAULT_ICON,
                                                  name=note.note,
                                                  description=note.format_date(),
-                                                 on_enter=HideWindowAction()))  # add here the the delete
+                                                 on_enter=ExtensionCustomAction({'to_remove': note})))  # add here the the delete
         else:
             items.append(ExtensionResultItem(icon=DEFAULT_ICON,
                                              name=f'Add {query}',
@@ -52,15 +52,17 @@ class ItemEnterEventListener(EventListener):
         # extension.preferences['filepath']
         note_manager = SimpleNoteManager()
         data = event.get_data()
-        if data and data['note']:
+        if data and data.get('note'):
             note_manager.add_note(data['note'])
             note_manager.save_notes()
             items.append(ExtensionResultItem(icon=DEFAULT_ICON,
                                              name='',
                                              description='',
                                              on_enter=HideWindowAction()))
+        elif data and data.get('to_remove'):
+            note_manager.remove_note(data['to_remove'])
+            note_manager.save_notes()
         return RenderResultListAction(items)
-
 
 if __name__ == '__main__':
     SimpleNoteExtension().run()
