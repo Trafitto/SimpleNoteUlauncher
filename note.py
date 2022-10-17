@@ -57,6 +57,10 @@ class SimpleNoteManager():
     def add_note(self, text: str):
         self.notes.append(SimpleNote(
             uuid.uuid4(), datetime.datetime.now().timestamp(), text))
+    
+
+    def remove_note(self, note: SimpleNote):
+        self.notes.remove(note)
 
 
 ''' SimpleNoteManager().add_note('test')
