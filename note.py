@@ -60,7 +60,7 @@ class SimpleNoteManager():
     
 
     def remove_note(self, note: SimpleNote):
-        self.notes.remove(note)
+        self.notes = list(filter(lambda n: n.uuid != note.uuid, self.notes))
 
 
 ''' SimpleNoteManager().add_note('test')
