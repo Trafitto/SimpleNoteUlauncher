@@ -3,6 +3,7 @@ import uuid
 import datetime
 import logging
 import os
+from typing import List
 
 
 class SimpleNote(object):
@@ -20,8 +21,9 @@ class SimpleNote(object):
 
 
 class SimpleNoteManager():
-    notes: list[SimpleNote] = []
+    notes: List[SimpleNote] = []
     filepath = './simple-note.txt'
+
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
             cls.instance = super(
@@ -30,7 +32,7 @@ class SimpleNoteManager():
 
     def __init__(self):
         if not os.path.exists(self.filepath):
-            file_ = open(self.filepath, 'x') 
+            file_ = open(self.filepath, 'x')
             file_.close()
         self.notes = self.read_notes()
 
@@ -47,20 +49,24 @@ class SimpleNoteManager():
         return self.notes
 
     def save_notes(self):
+
         if self.notes and len(self.notes) > 0:
             with open(self.filepath, 'w') as file_:
                 for note in self.notes:
                     print(str(note))
                     if note:
                         file_.write(str(note)+'\n')
+        elif len(self.notes) == 0:
+            open(self.filepath, 'w').close()
 
     def add_note(self, text: str):
         self.notes.append(SimpleNote(
             uuid.uuid4(), datetime.datetime.now().timestamp(), text))
-    
+        self.save_notes()
 
     def remove_note(self, note: SimpleNote):
         self.notes = list(filter(lambda n: n.uuid != note.uuid, self.notes))
+        self.save_notes()
 
 
 ''' SimpleNoteManager().add_note('test')

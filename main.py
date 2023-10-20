@@ -54,14 +54,15 @@ class ItemEnterEventListener(EventListener):
         data = event.get_data()
         if data and data.get('note'):
             note_manager.add_note(data['note'])
-            note_manager.save_notes()
+            
             items.append(ExtensionResultItem(icon=DEFAULT_ICON,
                                              name='',
                                              description='',
-                                             on_enter=HideWindowAction()))
+                                             on_enter=HideWindowAction())) # HideWindowAction
         elif data and data.get('to_remove'):
             note_manager.remove_note(data['to_remove'])
-            note_manager.save_notes()
+            
+            
         return RenderResultListAction(items)
 
 if __name__ == '__main__':
